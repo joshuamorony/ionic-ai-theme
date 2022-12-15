@@ -1,0 +1,7 @@
+{
+  "name": "ionic-ai-theme",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
