@@ -1,50 +1,21 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import {
-  RouteReuseStrategy,
-  RouterModule,
-  PreloadAllModules,
-} from '@angular/router';
-
+import { Component, EnvironmentInjector } from '@angular/core';
+import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
-import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   template: `
     <ion-app>
-      <ion-router-outlet></ion-router-outlet>
+      <ion-router-outlet
+        [environmentInjector]="environmentInjector"
+      ></ion-router-outlet>
     </ion-app>
   `,
   styles: [``],
+  imports: [IonicModule],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  standalone: true,
 })
 export class AppComponent {
-  constructor() {}
+  constructor(public environmentInjector: EnvironmentInjector) {}
 }
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    IonicModule.forRoot(),
-
-    RouterModule.forRoot(
-      [
-        {
-          path: 'dashboard',
-          loadChildren: () => import('./tabs/tabs.component'),
-        },
-        {
-          path: '',
-          redirectTo: 'dashboard',
-          pathMatch: 'full',
-        },
-      ],
-      { preloadingStrategy: PreloadAllModules }
-    ),
-  ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
